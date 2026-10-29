@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nursing License Model Test</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:700px;margin:20px auto;padding:15px;background:#f2f6fc;color:#172554}
+h1{text-align:center;color:#075985}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px #ccd}
+button{padding:12px 18px;margin:8px 4px;border:0;border-radius:7px;background:#0369a1;color:white;cursor:pointer}
+label{display:block;padding:10px;margin:8px 0;background:#eef6ff;border-radius:7px}
+</style>
+</head>
+<body>
+<h1>Nursing License Model Test</h1>
+<div class="card">
+<p>নমুনা পরীক্ষা — ৩টি প্রশ্ন</p>
+<form id="quiz">
+<div id="questions"></div>
+<button type="button" onclick="submitQuiz()">পরীক্ষা জমা দিন</button>
+<button type="button" onclick="location.reload()">আবার পরীক্ষা দিন</button>
+</form>
+<div id="result"></div>
+</div>
+<script>
+const qs=[
+{q:"1. স্বাভাবিক প্রাপ্তবয়স্কের pulse rate কত?",o:["20–40/min","60–100/min","120–160/min","160–200/min"],a:1},
+{q:"2. হাত ধোয়ার প্রধান উদ্দেশ্য কী?",o:["সময় নষ্ট করা","সংক্রমণ প্রতিরোধ","ক্ষুধা বাড়ানো","ঘুম বাড়ানো"],a:1},
+{q:"3. শরীরের তাপমাত্রা মাপার যন্ত্র কোনটি?",o:["Stethoscope","Thermometer","Sphygmomanometer","Glucometer"],a:1}
+];
+document.getElementById("questions").innerHTML=qs.map((q,i)=>`<div><p><b>${q.q}</b></p>${q.o.map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join("")}</div><hr>`).join("");
+function submitQuiz(){
+let score=0;
+qs.forEach((q,i)=>{if(document.querySelector('input[name="q'+i+'"]:checked')?.value==q.a)score++});
+document.getElementById("result").innerHTML="<h2>আপনার স্কোর: "+score+"/"+qs.length+"</h2>";
+}
+</script>
+</body>
+</html>
