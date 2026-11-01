@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FREE NURSING LICENSE MODEL TEST-03</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f4f8;
+  margin: 0;
+  padding: 15px;
+}
+.container {
+  max-width: 750px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+}
+header {
+  background: #075b9a;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+}
+.question {
+  padding: 15px;
+  margin: 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.option {
+  display: block;
+  padding: 10px;
+  margin: 7px 0;
+  background: #f3f6fa;
+  border-radius: 6px;
+}
+button {
+  background: #087b45;
+  color: white;
+  padding: 13px 25px;
+  border: none;
+  border-radius: 7px;
+  font-size: 17px;
+  cursor: pointer;
+}
+#timer {
+  font-size: 23px;
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+<h2>FREE NURSING LICENSE MODEL TEST-03</h2>
+<p>DATE: 7 OCT 2026</p>
+<p>FULL MARK: 100 [50+50]</p>
+<p>TOPIC: UNCOMMON NURSING LICENSE QUESTION</p>
+</header>
+
+<h3>পরীক্ষার্থীর তথ্য</h3>
+<input id="student" placeholder="আপনার নাম লিখুন" style="padding:12px;width:90%">
+<br><br>
+<input id="phone" placeholder="মোবাইল নম্বর লিখুন" style="padding:12px;width:90%">
+
+<h3 id="timer">সময়: 60:00</h3>
+
+<div id="quiz"></div>
+
+<button onclick="submitExam()">SUBMIT EXAM</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+// এখানে আপনার প্রশ্নগুলো লিখবেন
+const questions = [
+
+{
+q: "What is the normal adult pulse rate?",
+a: ["40-50 bpm", "60-100 bpm", "110-130 bpm", "140-160 bpm"],
+correct: 1
+},
+
+{
+q: "Which vitamin is essential for blood clotting?",
+a: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin K"],
+correct: 3
+},
+
+{
+q: "What is the normal adult respiratory rate?",
+a: ["8-10/min", "12-20/min", "25-30/min", "35-40/min"],
+correct: 1
+}
+
+// এই নিয়মে আরও 47টি প্রশ্ন যোগ করবেন
+
+];
+
+let time = 3600;
+let finished = false;
+
+function showQuestions() {
+  const quiz = document.getElementById("quiz");
+
+  questions.forEach((q, i) => {
+    let html = `
+      <div class="question">
+        <b>${i+1}. ${q.q}</b>
+    `;
+
+    q.a.forEach((option, j) => {
+      html += `
+        <label class="option">
+          <input type="radio" name="q${i}" value="${j}">
+          ${String.fromCharCode(65+j)}. ${option}
+        </label>
+      `;
+    });
+
+    html += `</div>`;
+    quiz.innerHTML += html;
+  });
+}
+
+function submitExam() {
+  if (finished) return;
+
+  const name = document.getElementById("student").value.trim();
+
+  if (!name) {
+    alert("আপনার নাম লিখুন");
+    return;
+  }
+
+  if (!confirm("আপনি কি পরীক্ষা জমা দিতে চান?")) return;
+
+  finished = true;
+  clearInterval(clock);
+
+  let score = 0;
+
+  questions.forEach((q, i) => {
+    const answer = document.querySelector(
+      `input[name="q${i}"]:checked`
+    );
+
+    if (answer && Number(answer.value) === q.correct) {
+      score++;
+    }
+  });
+
+  document.getElementById("result").innerHTML = `
+    <h2>পরীক্ষা সম্পন্ন!</h2>
+    <h3>নাম: ${name}</h3>
+    <h2 style="color:green">
+      প্রাপ্ত নম্বর: ${score} / ${questions.length}
+    </h2>
+    <p>সঠিক উত্তর: ${score}</p>
+    <p>ভুল অথবা উত্তর না দেওয়া: ${questions.length-score}</p>
+  `;
+
+  document.getElementById("quiz").style.display = "none";
+}
+
+const clock = setInterval(() => {
+  if (finished) return;
+
+  time--;
+
+  let min = Math.floor(time / 60);
+  let sec = time % 60;
+
+  document.getElementById("timer").innerText =
+    "সময়: " + min + ":" + String(sec).padStart(2,"0");
+
+  if (time <= 0) {
+    clearInterval(clock);
+    finished = true;
+    // সময় শেষ হলে পরীক্ষা জমা
+    finished = false;
+    submitExam();
+  }
+}, 1000);
+
+showQuestions();
+
+</script>
+</body>
+</html>
